@@ -1,0 +1,23 @@
+#include <Stepper.h>
+/*
+200 steps per revolution
+update the input quickly and set the RPM high, 60? 50?
+change the input values 0%-100%, the code will be based off that
+88 steps brings it just short of 160 degrees
+ 
+*/
+int EMGin = A2
+Stepper Step1 = Stepper(200,3,4,5,6) // temp pins, update when known
+
+
+void setup()
+{
+    pinMode(EMGin, INPUT); //EMG pin setup
+}
+void loop()
+{
+  ArmRotationRaw = analogRead(EMGin);
+  ArmRotationRaw/11.6363636 = ArmRotationRefined;
+   
+  
+}
