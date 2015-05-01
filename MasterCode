@@ -6,7 +6,20 @@ change the input values 0%-100%, the code will be based off that
 88 steps brings it just short of 160 degrees
  
 */
+
+//----------------------------------------------Variable assignment----------------------------------------------------
+
+
+//Sets origin position to position at program start
+int PreviousStepPosition = 0
+
+
+//-------------------------------------------------Motor pin assignment--------------------------------------------------
+
+//Assigning emg in pin
 int EMGin = A2
+
+// Assigning stepper motor pins
 Stepper Step1 = Stepper(200,3,4,5,6) // temp pins, update when known
 
 
@@ -16,10 +29,26 @@ void setup()
 }
 void loop()
 {
-  ARRaw = analogRead(EMGin); //ARRaw = ArmRotationRaw
-  ARRaw/11.6363636 = ARRef; //ARRef = ArmRotationRefined
-  /*so now I need to save ARRef as ARRefCurrent and take that value as -(ARRefCurrent-AARef) which would give the change 
-  required so if ARRefCurrent = 80 and AARef = 40 (the new position of the arm) then -(80-40)= -40, the number of steps 
-  to produced the needed change. 
-  */
+  ArmRotationRaw = analogRead(EMGin);
+  ArmRotationRaw/11.6363636 = ArmSteps; //how many steps from origin the position is
+  
+  -(PreviousStepPosition - ArmSteps) = StepsToMove;
+  
+   Switch (StepsToMove) 
+    {
+    
+    Case (StepsToMove > 0): 
+     {
+      Step1.step(1);
+      PreviousStepPosition + 1 = PreviousStepPosition;
+     }
+    Case (StepsToMove < 0): 
+     {
+      Step1.step(-1)
+      PreviousStepPosition - 1 = PreviousStepPosition;
+     }
+    Case (StepsToMove = 0): 
+     {
+      break;
+     }
 }
